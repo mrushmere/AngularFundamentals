@@ -4,14 +4,13 @@
 'use strict';
 
 eventsApp.controller('EventController',
-    function EventController($scope, eventData, $anchorScroll) {
-        $scope.boolValue = true;
-        $scope.mystyle = {color:'red'};
+    function EventController($scope, eventData, $routeParams, $route) {
         $scope.sortorder = '-upVoteCount';
-        eventData.getEvent()
-            .$promise
-            .then(function (event) {$scope.event = event;})
-            .catch(function (response) {console.log(response);});
+        $scope.event = $route.current.locals.event;
+
+        $scope.reload = function() {
+          $route.reload();
+        }
 
 
         $scope.upVoteSession = function(session) {
@@ -21,9 +20,5 @@ eventsApp.controller('EventController',
         $scope.downVoteSession = function(session) {
             session.upVoteCount--;
         };
-
-        $scope.scrollToSession = function () {
-            $anchorScroll();
-        }
     }
 );
